@@ -77,4 +77,9 @@ public class HelloController {
         //有负载均衡可以给模糊的地址，而上面的没有负载均衡的不能给模糊的地址，两者不能混用，如过下面这个用了上面sb.toString()的拼接样式也会报错
         return restTemplate.getForObject("http://provider/hello",String.class);
     }
+    //测试提交一下融合
+    @GetMapping("/hello4")
+    public String hello4() {
+        return restTemplate.getForObject("http://provider/hello",String.class);
+    }
 }
