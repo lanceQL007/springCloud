@@ -1,5 +1,6 @@
 package com.ql.consumer;
 
+import org.ql.commons.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.client.ServiceInstance;
@@ -7,10 +8,13 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import javax.ws.rs.core.MultivaluedMap;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -46,8 +50,9 @@ public class HelloController {
         }
         return "error";
     }
-
-    //注入RestTemplate
+    /**
+     * 注入RestTemplate
+     */
     @Autowired
     @Qualifier("restTemplateOne")
     RestTemplate restTemplateOne;
@@ -117,5 +122,40 @@ public class HelloController {
         URI uri = URI.create(url);
         String s3 = restTemplate.getForObject(uri, String.class);
         System.out.println(s3);
+    }
+
+
+    @GetMapping("/hello6")
+    public void hello6(){
+        //以key，value形式传递
+        MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+        map.add("name","java");
+        map.add("password","123456");
+        map.add("id",88);
+        User user = restTemplate.postForObject("http://provider/user1", map, User.class);
+        System.out.println(user);
+
+        //以json的形式传递
+        //断言结果为true，则继续往下执行，为false则终止，慎用
+        assert user != null;
+        user.setId(98);
+        User user1 = restTemplate.postForObject("http://provider/user2", user, User.class);
+        System.out.println(user1);
+    }
+
+    @GetMapping("/hello7")
+    public void hello7(){
+        //以key，value形式传递
+        MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+        map.add("name","java");
+        map.add("password","123456");
+        map.add("id",88);
+        //返回的是重定向的地址,后面不用返回值
+        URI uri = restTemplate.postForLocation("http://provider/register", map);
+        System.out.println(uri);
+        //通过重定向的地址进行跳转
+        String s = restTemplate.getForObject(uri, String.class);
+        System.out.println(s);
+
     }
 }

@@ -12,7 +12,9 @@ public class ConsumerApplication {
     public static void main(String[] args) {
         SpringApplication.run(ConsumerApplication.class, args);
     }
-    //提供url的连接对象实例
+    /**
+     * 提供url的连接对象实例
+     */
     @Bean
     RestTemplate restTemplateOne(){
         return new RestTemplate();
