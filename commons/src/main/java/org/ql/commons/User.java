@@ -10,6 +10,15 @@ public class User {
     private String name;
     private String password;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
+
     public Integer getId() {
         return id;
     }
