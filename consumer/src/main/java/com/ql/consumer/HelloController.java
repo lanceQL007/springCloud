@@ -1,10 +1,12 @@
 package com.ql.consumer;
 
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -12,11 +14,11 @@ import org.springframework.web.client.RestTemplate;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.Buffer;
+import java.io.UnsupportedEncodingException;
+import java.net.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author LanceQ
@@ -68,7 +70,10 @@ public class HelloController {
         String s = restTemplateOne.getForObject(sb.toString(), String.class);
         return s;
     }
-    //有两个restTemplate时，需要注解备注一下是哪一个RestTemplate
+    /**
+     * 有两个restTemplate时，需要注解备注一下是哪一个RestTemplate
+     */
+
     @Autowired
     @Qualifier("restTemplate")
     RestTemplate restTemplate;
@@ -77,9 +82,40 @@ public class HelloController {
         //有负载均衡可以给模糊的地址，而上面的没有负载均衡的不能给模糊的地址，两者不能混用，如过下面这个用了上面sb.toString()的拼接样式也会报错
         return restTemplate.getForObject("http://provider/hello",String.class);
     }
-    //测试提交一下融合
+    /**
+     * Get请求
+     */
     @GetMapping("/hello4")
-    public String hello4() {
-        return restTemplate.getForObject("http://provider/hello",String.class);
+    public void hello4() {
+        String s1 = restTemplate.getForObject("http://provider/hello2?name={1}", String.class, "java");
+        System.out.println(s1);
+        //除了包含返回结果，还包含返回信息
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://provider/hello2?name={1}", String.class, "java");
+        System.out.println("返回的具体数据："+responseEntity.getBody());
+        HttpStatus statusCode = responseEntity.getStatusCode();
+        System.out.println("返回的状态码（是一个对象）："+ statusCode);
+        int statusCodeValue = responseEntity.getStatusCodeValue();
+        System.out.println("返回的状态码（int类型）："+ statusCodeValue);
+        System.out.println("响应头");
+        HttpHeaders headers = responseEntity.getHeaders();
+        Set<String> set = headers.keySet();
+        for (String s : set) {
+            System.out.println(s+"---"+headers.get(s));
+        }
+    }
+    @GetMapping("/hello5")
+    public void hello5() throws UnsupportedEncodingException {
+        String s1 = restTemplate.getForObject("http://provider/hello2?name={1}", String.class, "java");
+        System.out.println(s1);
+
+        HashMap<String, String> map = new HashMap<>(2);
+        map.put("name","zhangsan");
+        String s2 = restTemplate.getForObject("http://provider/hello2?name={name}", String.class, map);
+        System.out.println(s2);
+        //中文需要转码，否则会报错
+        String url="http://provider/hello2?name="+ URLEncoder.encode("张三","UTF-8");
+        URI uri = URI.create(url);
+        String s3 = restTemplate.getForObject(uri, String.class);
+        System.out.println(s3);
     }
 }
