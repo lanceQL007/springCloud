@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -156,6 +157,18 @@ public class HelloController {
         //通过重定向的地址进行跳转
         String s = restTemplate.getForObject(uri, String.class);
         System.out.println(s);
-
+    }
+    @GetMapping("/hello8")
+    public void hello8(){
+        MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+        map.add("name","java");
+        map.add("password","123456");
+        map.add("id",88);
+        restTemplate.put("http://provider/user1",map);
+        User user = new User();
+        user.setId(66);
+        user.setName("小明");
+        user.setPassword("123456");
+        restTemplate.put("http://provider/user2",user);
     }
 }
