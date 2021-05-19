@@ -59,4 +59,13 @@ public class HelloController {
     public void updateUser2(@RequestBody User user){
         System.out.println(user);
     }
+
+    @DeleteMapping("/user1")
+    public void deleteUser1(Integer id){
+        System.out.println(id);
+    }
+    @DeleteMapping("/user2/{id}")
+    public void deleteUser2(@PathVariable Integer id){
+        System.out.println(id);
+    }
 }

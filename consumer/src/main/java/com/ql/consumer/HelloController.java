@@ -171,4 +171,9 @@ public class HelloController {
         user.setPassword("123456");
         restTemplate.put("http://provider/user2",user);
     }
+    @GetMapping("/hello9")
+    public void hello9(){
+        restTemplate.delete("http://provider/user1?id={1}",99);
+        restTemplate.delete("http://provider/user2/{1}",66);
+    }
 }
