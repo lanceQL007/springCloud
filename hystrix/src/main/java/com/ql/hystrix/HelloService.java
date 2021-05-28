@@ -1,9 +1,12 @@
 package com.ql.hystrix;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.command.AsyncResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.concurrent.Future;
 
 /**
  * @author LanceQ
@@ -27,6 +30,15 @@ public class HelloService {
     @HystrixCommand(fallbackMethod = "error")
     public String hello(){
         return restTemplate.getForObject("http://provider/hello",String.class);
+    }
+    @HystrixCommand(fallbackMethod = "error")
+    public Future<String> hello2(){
+        return new AsyncResult<String>() {
+            @Override
+            public String invoke() {
+                return restTemplate.getForObject("http://provider/hello",String.class);
+            }
+        };
     }
 
     /**
