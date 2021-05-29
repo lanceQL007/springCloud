@@ -27,4 +27,14 @@ public class HelloCommand extends HystrixCommand<String> {
     protected String run() throws Exception {
         return restTemplate.getForObject("http://provider/hello",String.class);
     }
+
+    /**
+     * 这个方法是请求失败的回调
+     * @return
+     */
+    @Override
+    protected String getFallback() {
+      //  return super.getFallback();
+        return "error-extends";
+    }
 }
