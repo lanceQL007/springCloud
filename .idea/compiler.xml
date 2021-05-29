@@ -12,7 +12,9 @@
         <module name="eureka" />
         <module name="hystrix" />
         <module name="consul-consumer" />
+        <module name="openfeign" />
         <module name="consumer" />
+        <module name="hello-api" />
       </profile>
     </annotationProcessing>
   </component>
@@ -23,6 +25,7 @@
       <module name="consumer" options="-parameters" />
       <module name="eureka" options="-parameters" />
       <module name="hystrix" options="-parameters" />
+      <module name="openfeign" options="-parameters" />
       <module name="provider" options="-parameters" />
     </option>
   </component>

@@ -1,9 +1,12 @@
 package com.ql.provider;
 
+import org.ql.api.IUserService;
 import org.ql.commons.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Date;
 
 /**
@@ -12,14 +15,15 @@ import java.util.Date;
  * @time 2021/5/15 20:10
  */
 @RestController
-public class HelloController {
+public class HelloController implements IUserService {
     @Value("${server.port}")
     Integer port;
-    @GetMapping("/hello")
+    @Override
     public String hello() {
         return "hello java!"+port;
     }
-    @GetMapping("/hello2")
+
+    @Override
     public String hello2(String name){
         System.out.println(new Date()+">>>"+name);
         return "hello "+name;
@@ -40,7 +44,7 @@ public class HelloController {
      * @param user
      * @return
      */
-    @PostMapping("/user2")
+    @Override
     public User addUser2(@RequestBody User user){
         return user;
     }
@@ -67,8 +71,13 @@ public class HelloController {
     public void deleteUser1(Integer id){
         System.out.println(id);
     }
-    @DeleteMapping("/user2/{id}")
+    @Override
     public void deleteUser2(@PathVariable Integer id){
         System.out.println(id);
+    }
+
+    @Override
+    public void getUserByName(@RequestHeader String name) throws UnsupportedEncodingException {
+        System.out.println(URLDecoder.decode(name,"UTF-8"));
     }
 }
