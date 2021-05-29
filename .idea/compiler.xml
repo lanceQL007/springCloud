@@ -6,17 +6,23 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="consumer" />
+        <module name="consul-provider" />
         <module name="commons" />
         <module name="provider" />
         <module name="eureka" />
+        <module name="hystrix" />
+        <module name="consul-consumer" />
+        <module name="consumer" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="consul-consumer" options="-parameters" />
+      <module name="consul-provider" options="-parameters" />
       <module name="consumer" options="-parameters" />
       <module name="eureka" options="-parameters" />
+      <module name="hystrix" options="-parameters" />
       <module name="provider" options="-parameters" />
     </option>
   </component>

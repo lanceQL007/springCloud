@@ -4,6 +4,8 @@ import org.ql.commons.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 /**
  * @author LanceQ
  * @version 1.0
@@ -19,6 +21,7 @@ public class HelloController {
     }
     @GetMapping("/hello2")
     public String hello2(String name){
+        System.out.println(new Date()+">>>"+name);
         return "hello "+name;
     }
 
