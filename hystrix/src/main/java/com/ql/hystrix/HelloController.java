@@ -3,6 +3,7 @@ package com.ql.hystrix;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.strategy.concurrency.HystrixRequestContext;
+import org.ql.commons.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author LanceQ
@@ -22,6 +24,8 @@ public class HelloController {
     HelloService helloService;
     @Autowired
     RestTemplate restTemplate;
+    @Autowired
+    UserService userService;
 
     @GetMapping("/hello")
     public String hello(){
@@ -76,6 +80,49 @@ public class HelloController {
         helloService.deleteUserByName("java");
         //第二次请求，虽然参数还是java，但是缓存数据已经没了，所以这一次，provider还是会受到请求
         java = helloService.hello3("java");
+        ctx.close();
+    }
+
+    @GetMapping("/hello5")
+    public void hello5() throws ExecutionException, InterruptedException {
+        HystrixRequestContext ctx = HystrixRequestContext.initializeContext();
+        UserCollapseCommand cmd1 = new UserCollapseCommand(userService, 99);
+        UserCollapseCommand cmd2 = new UserCollapseCommand(userService, 98);
+        UserCollapseCommand cmd3 = new UserCollapseCommand(userService, 97);
+        Future<User> q1 = cmd1.queue();
+        Future<User> q2 = cmd2.queue();
+        Future<User> q3 = cmd3.queue();
+        User u1 = q1.get();
+        User u2 = q2.get();
+        User u3 = q3.get();
+        System.out.println(u1);
+        System.out.println(u2);
+        System.out.println(u3);
+        TimeUnit.SECONDS.sleep(2);
+        UserCollapseCommand cmd4 = new UserCollapseCommand(userService, 96);
+        Future<User> q4 = cmd4.queue();
+        User u4 = q4.get();
+        System.out.println(u4);
+        ctx.close();
+    }
+
+    @GetMapping("/hello6")
+    public void hello6() throws ExecutionException, InterruptedException {
+        HystrixRequestContext ctx = HystrixRequestContext.initializeContext();
+        Future<User> q1 = userService.getUserById(99);
+        Future<User> q2 = userService.getUserById(98);
+        Future<User> q3 = userService.getUserById(97);
+        User u1 = q1.get();
+        User u2 = q2.get();
+        User u3 = q3.get();
+        System.out.println(u1);
+        System.out.println(u2);
+        System.out.println(u3);
+        TimeUnit.SECONDS.sleep(2);
+
+        Future<User> q4 = userService.getUserById(96);
+        User u4 = q4.get();
+        System.out.println(u4);
         ctx.close();
     }
 }
