@@ -27,10 +27,12 @@ public class HelloService {
      * error服务降级
      * @return
      */
-    @HystrixCommand(fallbackMethod = "error")
+    @HystrixCommand(fallbackMethod = "error",ignoreExceptions = ArithmeticException.class)
     public String hello(){
+        int i = 1 / 0;
         return restTemplate.getForObject("http://provider/hello",String.class);
     }
+
     @HystrixCommand(fallbackMethod = "error")
     public Future<String> hello2(){
         return new AsyncResult<String>() {
@@ -46,7 +48,7 @@ public class HelloService {
      * 方法返回值也要和对应的方法一致
      * @return
      */
-    public String error(){
-        return "error";
+    public String error(Throwable t){
+        return "error"+t.getMessage();
     }
 }

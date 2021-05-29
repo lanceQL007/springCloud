@@ -25,6 +25,7 @@ public class HelloCommand extends HystrixCommand<String> {
      */
     @Override
     protected String run() throws Exception {
+        int i = 1 / 0;
         return restTemplate.getForObject("http://provider/hello",String.class);
     }
 
@@ -35,6 +36,6 @@ public class HelloCommand extends HystrixCommand<String> {
     @Override
     protected String getFallback() {
       //  return super.getFallback();
-        return "error-extends";
+        return "error-extends"+getExecutionException().getMessage();
     }
 }
