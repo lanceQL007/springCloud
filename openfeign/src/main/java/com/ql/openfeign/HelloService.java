@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
  * @version 1.0
  * @time 2021/5/29 17:01
  */
-@FeignClient("provider")
+//@FeignClient(value = "provider",fallback = HelloServiceFallback.class)通过注解的形式
+@FeignClient(value = "provider",fallbackFactory = HelloServiceFallbackFactory.class)//通过自定义的形式是吸纳降级
 public interface HelloService extends IUserService {
 
 }
