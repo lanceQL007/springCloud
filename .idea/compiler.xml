@@ -12,6 +12,7 @@
         <module name="provider" />
         <module name="eureka" />
         <module name="hystrix" />
+        <module name="micrometer" />
         <module name="consul-consumer" />
         <module name="resilience4j-2" />
         <module name="openfeign" />
@@ -27,6 +28,7 @@
       <module name="consumer" options="-parameters" />
       <module name="eureka" options="-parameters" />
       <module name="hystrix" options="-parameters" />
+      <module name="micrometer" options="-parameters" />
       <module name="openfeign" options="-parameters" />
       <module name="provider" options="-parameters" />
       <module name="resilience4j-2" options="-parameters" />
