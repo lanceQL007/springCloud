@@ -1,5 +1,6 @@
 package com.ql.provider;
 
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.ql.api.IUserService;
 import org.ql.commons.User;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,8 +20,12 @@ public class HelloController implements IUserService {
     @Value("${server.port}")
     Integer port;
     @Override
+    @RateLimiter(name="rlA")
     public String hello() {
-        return "hello java!"+port;
+        String s = "hello java!" + port;
+        System.out.println(new Date());
+     //   int i=1/0;//断路器的实验
+        return s;
     }
 
     @Override

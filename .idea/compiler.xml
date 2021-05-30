@@ -8,10 +8,12 @@
         <outputRelativeToContentRoot value="true" />
         <module name="consul-provider" />
         <module name="commons" />
+        <module name="resilience4j" />
         <module name="provider" />
         <module name="eureka" />
         <module name="hystrix" />
         <module name="consul-consumer" />
+        <module name="resilience4j-2" />
         <module name="openfeign" />
         <module name="consumer" />
         <module name="hello-api" />
@@ -27,6 +29,7 @@
       <module name="hystrix" options="-parameters" />
       <module name="openfeign" options="-parameters" />
       <module name="provider" options="-parameters" />
+      <module name="resilience4j-2" options="-parameters" />
     </option>
   </component>
 </project>
