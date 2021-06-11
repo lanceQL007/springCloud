@@ -7,6 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="hello-api" />
+        <module name="config-server" />
+        <module name="config-client" />
         <module name="gateway" />
         <module name="openfeign" />
         <module name="zuul" />
@@ -25,6 +27,8 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="config-client" options="-parameters" />
+      <module name="config-server" options="-parameters" />
       <module name="consul-consumer" options="-parameters" />
       <module name="consul-provider" options="-parameters" />
       <module name="consumer" options="-parameters" />
