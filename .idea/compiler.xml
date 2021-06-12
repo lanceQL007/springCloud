@@ -9,6 +9,7 @@
         <module name="hello-api" />
         <module name="config-server" />
         <module name="config-client" />
+        <module name="stream" />
         <module name="gateway" />
         <module name="openfeign" />
         <module name="zuul" />
@@ -39,6 +40,7 @@
       <module name="openfeign" options="-parameters" />
       <module name="provider" options="-parameters" />
       <module name="resilience4j-2" options="-parameters" />
+      <module name="stream" options="-parameters" />
       <module name="zuul" options="-parameters" />
     </option>
   </component>
