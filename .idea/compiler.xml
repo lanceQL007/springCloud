@@ -12,6 +12,7 @@
         <module name="stream" />
         <module name="gateway" />
         <module name="openfeign" />
+        <module name="sleuth" />
         <module name="zuul" />
         <module name="resilience4j" />
         <module name="provider" />
@@ -40,6 +41,7 @@
       <module name="openfeign" options="-parameters" />
       <module name="provider" options="-parameters" />
       <module name="resilience4j-2" options="-parameters" />
+      <module name="sleuth" options="-parameters" />
       <module name="stream" options="-parameters" />
       <module name="zuul" options="-parameters" />
     </option>
